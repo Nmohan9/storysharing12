@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %></title>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+  <style>
+    .genre-buttons {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 10px;
+      margin-top: 10px;
+      scrollbar-width: none; /* For Firefox */
+      -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    }
+
+    .genre-buttons::-webkit-scrollbar {
+      display: none; /* For Chrome, Safari, and Opera */
+    }
+
+    .genre-button {
+      background-image: linear-gradient(to right, #273a90, #00BFFF); 
+      border: none;
+      color: white;
+      padding: 10px 30px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    
+    .genre-button:hover {
+      background-image: linear-gradient(to right, #000000, #a0a7aa);
+      transform: scale(0.9);
+    }
+    .story-detail {
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      margin: 20px auto;
+      max-width: 800px;
+    }
+
+    .story-detail h2 {
+      margin-top: 0;
+    }
+
+    .story-detail p {
+      line-height: 1.6;
+    }
+
+    .user-name {
+      color: white;
+      margin-right: 15px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="back">
+    <header style="position: relative; padding: 10px;">
+      <a href="/" style="text-decoration: none;">
+        <h1 style="color:#ffffff;">Story Sharing</h1>
+      </a>
+      
+        <a href="/profile" style="display: inline-block; height: 40px; width: 40px; text-decoration: none;">
+          <img
+            src="<%= userPhotoUrl %>"
+            alt="Profile"
+            style="width: 40px; height: 40px; border-radius: 50%;"
+          />
+        </a>
+      </div>
+    </header>
+    
+    <div class="genre-buttons">
+      <button class="genre-button" draggable="true">All</button>  
+      <button class="genre-button" draggable="true">Comedy</button>
+      <button class="genre-button" draggable="true">Action</button>
+      <button class="genre-button" draggable="true">Drama</button>
+      <button class="genre-button" draggable="true">Fiction</button>
+      <button class="genre-button" draggable="true">Thriller</button>
+      <button class="genre-button" draggable="true">Documentary</button>
+      <button class="genre-button" draggable="true">Animation</button>
+      <button class="genre-button" draggable="true">War</button>
+      <button class="genre-button" draggable="true">Adventure</button>  
+      <button class="genre-button" draggable="true">History</button>
+      <button class="genre-button" draggable="true">Horror</button>
+      <button class="genre-button" draggable="true">Mystery</button>
+      <button class="genre-button" draggable="true">Romance</button>
+      <button class="genre-button" draggable="true">Science Fiction</button>
+      <button class="genre-button" draggable="true">Action-Adventure</button>
+      <button class="genre-button" draggable="true">Fantasy</button>
+      <button class="genre-button" draggable="true">Musical</button>
+      <button class="genre-button" draggable="true">Romantic Comedy</button>
+    </div>
+    <main>
+      <h2><%= pageTitle %></h2>
+      <div class="story-container">
+        <% if (stories.length === 0) { %>
+          <p>No stories yet</p>
+        <% } else { %>
+          <% stories.forEach(story => { %>
+            <% if (story.public || story.userId === currentUserId) { %>
+              <div class="story-card">
+                <a href="/story/<%= story._id %>" style="text-decoration: none; color: rgb(34, 33, 33); font-size: 18px; font-family: cursive;">
+                  <h3><%= story.title %></h3>
+                  <%= story.description %></p>
+                </a><p>
+                <p class="genre"><strong>Genre:</strong> <%= story.genre %></p>
+                <p><strong>Likes:</strong> <%= Array.isArray(story.likes) ? story.likes.length : 0 %></p>
+                <% if (pageTitle !== "Your Stories") { %>
+                  <form action="/like/<%= story._id %>" method="post">
+                    <button type="submit" class="like-button">
+                      <%= Array.isArray(story.likes) && story.likes.includes(currentUserId) ? '♥' : '♡' %>
+                    </button>
+                  </form>
+                <% } %>
+                <% if (story.userId === currentUserId) { %>
+                  <a href="/edit-story/<%= story._id %>" class="edit-button">Edit</a>
+                <% } %>
+              </div>
+            <% } %>
+          <% }) %>
+        <% } %>
+      </div>
+      <div class="submit-story" style="position: fixed; bottom: 20px; right: 20px;">
+        <a href="/submit-story" class="button" style="font-size: 34px; padding: 10px 20px; border-radius: 50%; background-color: #1672c2; color: white; text-align: center; text-decoration: none;">+</a>
+      </div>
+    </main>
+    <%- include('partials/footer') %>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const genreButtons = document.querySelectorAll('.genre-button');
+      genreButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const genre = button.textContent.trim();
+          window.location.href = `/?genre=${genre}`;
+        });
+      });
+    });
+
+    const genreButtons = document.querySelector('.genre-buttons');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    genreButtons.addEventListener('mousedown', (e) => {
+      isDown = true;
+      genreButtons.classList.add('active');
+      startX = e.pageX - genreButtons.offsetLeft;
+      scrollLeft = genreButtons.scrollLeft;
+    });
+
+    genreButtons.addEventListener('mouseleave', () => {
+      isDown = false;
+      genreButtons.classList.remove('active');
+    });
+
+    genreButtons.addEventListener('mouseup', () => {
+      isDown = false;
+      genreButtons.classList.remove('active');
+    });
+
+    genreButtons.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - genreButtons.offsetLeft;
+      const walk = (x - startX) * 3; //scroll-fast
+      genreButtons.scrollLeft = scrollLeft - walk;
+    });
+  </script>
+</body>
+</html>

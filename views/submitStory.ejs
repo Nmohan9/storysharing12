@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Story</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      background-color: #cdcaca;
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 800px;
+    }
+
+    form {
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .genre-dropdown {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .submit-button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Submit Your Story</h1>
+    <a href="/" class="button">Home</a>
+  </header>
+
+  <main>
+    <form action="/submit-story" method="POST">
+      <label for="title">Story Title:</label>
+      <input type="text" id="title" name="title" required>
+
+      <label for="description">Story Description:</label>
+      <textarea id="description" name="description" rows="3" required></textarea>
+
+      <label for="content">Story Content:</label>
+      <textarea id="content" name="content" rows="6" required></textarea>
+
+      <label for="genre">Genre:</label>
+      <select id="genre" name="genre" class="genre-dropdown" required>
+        <option value="Action">Action</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Drama">Drama</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Thriller">Thriller</option>
+        <option value="Documentary">Documentary</option>
+        <option value="Animation">Animation</option>
+        <option value="War">War</option>
+        <option value="Adventure">Adventure</option>
+        <option value="History">History</option>
+        <option value="Horror">Horror</option>
+        <option value="Mystery">Mystery</option>
+        <option value="Romance">Romance</option>
+        <option value="Science Fiction">Science Fiction</option>
+        <option value="Fantasy">Fantasy</option>
+        <option value="Musical">Musical</option>
+        <option value="Romantic Comedy">Romantic Comedy</option>
+        
+
+        
+        <!-- Add more genres as needed -->
+      </select>
+
+     <h2 style="font-size: 15px;">Make story Visibility to :
+     </h2>
+
+      <div>
+        <button type="submit" name="visibility" value="public" class="submit-button">Public</button>
+        <button type="submit" name="visibility" value="private" class="submit-button">Private</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

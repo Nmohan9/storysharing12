@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Profile</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
+    <style>
+      .story-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .story-card {
+        background-color: #cecdcd;
+        border-radius: 10px;
+        padding: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+      }
+
+      /* .story-card:hover {
+      transform: translateY(-5px);
+    } */
+
+      .story-card h3 {
+        margin-top: 0;
+      }
+
+      .story-card p {
+        line-height: 1.6;
+      }
+
+      .toggle-buttons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .toggle-buttons button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 0 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .toggle-buttons button.active {
+        background-color: #0056b3;
+      }
+
+      .toggle-buttons button:hover {
+        background-color: #0056b3;
+      }
+
+      .story-section {
+        display: none;
+      }
+
+      .story-section.active {
+        display: block;
+      }
+
+      .user-name {
+        color: white;
+        margin-right: 15px;
+        font-size: 18px;
+      }
+      .edit-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-image: linear-gradient(90deg, black, rgb(106, 147, 208));
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .edit-button:hover {
+        background-color: #218838;
+      }
+
+      .logout-button {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 10px 60px;
+        margin-top: 40px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .logout-button:hover {
+        background-color: #cc0000;
+      }
+    
+      .profile-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: transform 1s ease;
+      position: relative;
+   
+      left:-10px
+    }
+
+    .profile-photo:hover {
+      transform: scale(2.1);
+      border-radius: 4px;
+    }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="/" style="text-decoration: none; color: #ffffff"
+        ><h1>Story Sharing</h1></a
+      >
+      <div style="display: flex; align-items: center">
+       
+          <a
+            href="/profile"
+            style="
+              display: inline-block;
+              height: 40px;
+              width: 40px;
+              text-decoration: none;
+            "
+          >
+            <img
+              src="<%= userPhotoUrl %>"
+              alt="Profile"
+              
+              class="profile-photo"
+            />
+          </a>
+       
+      </div>
+    </header>
+    <main>
+      <div class="toggle-buttons">
+        <button id="public-stories-btn" class="active">Public Stories</button>
+        <button id="private-stories-btn">Private Stories</button>
+      </div>
+
+      <div id="public-stories" class="story-section active">
+        <h2 style="text-align: center">Public Stories</h2>
+        <div class="story-container">
+          <% if (publicStories.length === 0) { %>
+          <p style="text-align: center">No public stories yet</p>
+          <% } else { %> <% publicStories.forEach(story => { %>
+          <div class="story-card">
+            <a
+              href="/story/<%= story._id %>"
+              style="
+                text-decoration: none;
+                color: inherit;
+                font-family: cursive;
+                color: black;
+              "
+            >
+              <h3><%= story.title %></h3>
+              <p><%= story.description %></p>
+            </a>
+            <p class="genre"><strong>Genre:</strong> <%= story.genre %></p>
+            <p><strong>Likes:</strong> <%= story.likes %></p>
+            <a href="/edit-story/<%= story._id %>" class="edit-button">Edit</a>
+          </div>
+          <% }) %> <% } %>
+        </div>
+      </div>
+
+      <div id="private-stories" class="story-section">
+        <h2 style="text-align: center">Private Stories</h2>
+        <div class="story-container">
+          <% if (privateStories.length === 0) { %>
+          <p style="text-align: center">No private stories yet</p>
+          <% } else { %> <% privateStories.forEach(story => { %>
+          <div class="story-card">
+            <a
+              href="/story/<%= story._id %>"
+              style="text-decoration: none; color: inherit"
+            >
+              <h3><%= story.title %></h3>
+              <p><%= story.description %></p>
+            </a>
+            <p class="genre"><strong>Genre:</strong> <%= story.genre %></p>
+            <p><strong>Likes:</strong> <%= story.likes %></p>
+            <a href="/edit-story/<%= story._id %>" class="edit-button">Edit</a>
+          </div>
+          <% }) %> <% } %>
+        </div>
+      </div>
+      <div class="submit-story" style="position: fixed; bottom: 20px; right: 20px;">
+        <a href="/submit-story" class="button" style="font-size: 34px; padding: 10px 20px; border-radius: 50%; background-color: #1672c2; color: white; text-align: center; text-decoration: none;">+</a>
+      </div>
+    </main>
+    <center>
+      <a href="/logout" class="logout-button">Logout</a>
+    </center>
+   
+    <script>
+      const publicStoriesBtn = document.getElementById("public-stories-btn");
+      const privateStoriesBtn = document.getElementById("private-stories-btn");
+      const publicStoriesSection = document.getElementById("public-stories");
+      const privateStoriesSection = document.getElementById("private-stories");
+
+      publicStoriesBtn.addEventListener("click", () => {
+        publicStoriesBtn.classList.add("active");
+        privateStoriesBtn.classList.remove("active");
+        publicStoriesSection.classList.add("active");
+        privateStoriesSection.classList.remove("active");
+      });
+
+      privateStoriesBtn.addEventListener("click", () => {
+        privateStoriesBtn.classList.add("active");
+        publicStoriesBtn.classList.remove("active");
+        privateStoriesSection.classList.add("active");
+        publicStoriesSection.classList.remove("active");
+      });
+    </script>
+  </body>
+</html>

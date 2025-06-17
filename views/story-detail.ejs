@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= story.title %></title>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    
+    header {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .story-detail {
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      max-width: 800px;
+      padding: 20px;
+    }
+
+    .story-detail h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .story-detail p {
+      line-height: 1.6;
+      color: #555;
+    }
+
+    .story-detail p strong {
+      color: #333;
+    }
+
+    .comment-section {
+      margin-top: 40px;
+    }
+
+    .comment {
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .comment-form textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .comment-form button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .comment-form button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" style="text-decoration: none;"><h1>Story Sharing</h1></a>
+    <a href="/profile" style="display: inline-block; height: 40px; width: 40px; text-decoration: none; padding: 10px 20px;
+    display: flex;">
+      <img
+        src="https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3407.jpg?w=360"
+        alt="Profile"
+        style="width: 40px; height: 40px; border-radius: 50%;"
+      />
+    </a>
+  </header>
+  <main>
+    <div class="story-detail">
+      <h2><%= story.title %></h2>
+      <p><%= story.content %></p>
+    </div>
+
+    <div class="comment-section">
+      <h3>Comments</h3>
+      <% comments.forEach(comment => { %>
+        <div class="comment">
+          <p><strong><%= comment.author %>:</strong> <%= comment.content %></p>
+          <p><small><%= new Date(comment.createdAt).toLocaleString() %></small></p>
+        </div>
+      <% }) %>
+
+      <div class="comment-form">
+        <form action="/story/<%= story._id %>/comment" method="post">
+          <textarea name="content" rows="4" placeholder="Write your comment here..." required></textarea>
+          <button type="submit">Post Comment</button>
+        </form>
+      </div>
+    </div>
+    
+  </main><%- include('partials/footer') %>
+</body>
+</html>
