@@ -5,6 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Signup</title>
   <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* Main Block Styles */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  background-color: #f4f7fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+label {
+  font-size: 1rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+input {
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #0073e6;
+  outline: none;
+}
+
+.submit-button {
+  background-color: #0073e6;
+  color: white;
+  font-size: 1.1rem;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 160px;
+}
+
+.submit-button:hover {
+  background-color: #00c6ff;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup-link a {
+  color: #0073e6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+  </style>
 </head>
 <body>
   <header style="background-image: linear-gradient(90deg, #0073e6, #00c6ff) ;">
@@ -30,10 +103,11 @@
       <input type="password" id="confirm-password" name="confirmPassword" placeholder="Re-enter your password" required>
 
       <button type="submit" class="submit-button">Sign Up</button>
-    </form>
+   
     <div class="signup-link">
       <p> Have an account? <a href="/login">login</a></p>
     </div>
-  </main>
+  </main> 
+</form>
 </body>
 </html>
